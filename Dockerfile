@@ -1,5 +1,5 @@
 FROM alpine:3.20
-ARG author="David Personette" mail="dperson@gmail.com"
+LABEL author="David Personette" mail="dperson@gmail.com"
 
 # Install samba
 # sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
