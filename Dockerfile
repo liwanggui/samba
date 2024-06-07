@@ -1,7 +1,8 @@
-FROM alpine
-MAINTAINER David Personette <dperson@gmail.com>
+FROM alpine:3.20
+ARG author="David Personette" mail="dperson@gmail.com"
 
 # Install samba
+# sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 RUN apk --no-cache --no-progress upgrade && \
     apk --no-cache --no-progress add bash samba shadow tini tzdata && \
     addgroup -S smb && \
@@ -40,11 +41,11 @@ RUN apk --no-cache --no-progress upgrade && \
     echo '   recycle:versions = yes' >>$file && \
     echo '' >>$file && \
     echo '   # Security' >>$file && \
-    echo '   client ipc max protocol = SMB3' >>$file && \
+    echo '   client ipc max protocol = SMB3_11' >>$file && \
     echo '   client ipc min protocol = SMB2_10' >>$file && \
-    echo '   client max protocol = SMB3' >>$file && \
+    echo '   client max protocol = SMB3_11' >>$file && \
     echo '   client min protocol = SMB2_10' >>$file && \
-    echo '   server max protocol = SMB3' >>$file && \
+    echo '   server max protocol = SMB3_11' >>$file && \
     echo '   server min protocol = SMB2_10' >>$file && \
     echo '' >>$file && \
     echo '   # Time Machine' >>$file && \
@@ -55,7 +56,7 @@ RUN apk --no-cache --no-progress upgrade && \
     echo '' >>$file && \
     rm -rf /tmp/*
 
-COPY samba.sh /usr/bin/
+ADD samba.sh /usr/bin/
 
 EXPOSE 137/udp 138/udp 139 445
 
